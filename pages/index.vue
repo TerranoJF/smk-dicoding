@@ -1,3 +1,3 @@
 <template>
-    <h1>Ini Halaman awalll</h1>
+    <h1>Ini Halaman Home</h1>
 </template>
