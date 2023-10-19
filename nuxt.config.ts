@@ -11,8 +11,8 @@ export default defineNuxtConfig({
   
   pwa: { 
     manifest: {
-      name: "SMKCODING",
-      short_name: "SC",
+      name: "E-Commerce",
+      short_name: "EC",
       theme_color: "#fff",
       background_color: "#fff",
       display: "standalone",
