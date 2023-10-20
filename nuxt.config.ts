@@ -9,6 +9,17 @@ export default defineNuxtConfig({
     configPath : "~/tailwind.config.ts",
   },
   
+  app: {
+    head: {
+      link: [
+        { rel: "stylesheet", href:
+          "https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" }
+      ],
+    }
+  },
+
+
+  
   pwa: { 
     manifest: {
       name: "E-Commerce",
