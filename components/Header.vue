@@ -12,11 +12,11 @@
             <nav class="flex items-center gap-6">
                 <NuxtLink to="/" class="text-base">Beranda</NuxtLink>
 
-                <NuxtLink to="/products/" class="text-base">Produk-produk</NuxtLink>
+                <NuxtLink to="/products/" class="text-base">Produk-aing</NuxtLink>
 
                 <NuxtLink to="/product/" class="text-base"> Produk </NuxtLink>
 
-                <NuxtLink to="/profil/test/" class="text-base">Profile</NuxtLink>
+                <NuxtLink to="/cart/" class="text-base">Cart</NuxtLink>
             </nav>
         </div>
     </div>
