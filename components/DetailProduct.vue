@@ -5,6 +5,10 @@
             default: {},
         }
     })
+    // console.log(props);
+    
+  
+    const { baseStorageUrl } = useAppConfig();
 </script>
 
 
@@ -21,7 +25,7 @@
             <div class="flex items-center">
                 <div class="w-1/2 bg-gray-300 mr-5 rounded-3xl flex justify-center items-
                     center p-5 h-[500px]">
-                    <img :src="props.product.image" class="w-full h-full object-contain"/>
+                    <img :src="baseStorageUrl + props.product.image" class="w-full h-full object-contain"/>
                 </div>
                 <div class="w-1/2 pl-5">
                     <p class="text-xl font-light mb-3">{{ props.product.category }}</p>
