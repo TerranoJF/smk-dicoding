@@ -31,15 +31,9 @@ interface AuthPayload {
             },
             body: payload,
           });
-            
-          // Cek user ID dan set peran admin jika sesuai
-          if (response.user && response.user.id === "56b649c2-3608-41ac-8234-59aaa9b70c9c") {
-            // Anda dapat menetapkan peran admin di sini
-            const cookie = useCookie("user_role");
-            cookie.value = "admin";
-          }
+          
           const cookie = useCookie("user_role");
-            cookie.value = "user"; 
+          cookie.value = response.user && response.user.id === "56b649c2-3608-41ac-8234-59aaa9b70c9c" ? "admin" : "user";
       
           this.setAccessToken(response);
           this.setRefreshToken(response);
