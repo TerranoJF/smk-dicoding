@@ -65,6 +65,26 @@ export const useProductsStore = defineStore("products", {
                 this.products = data.value;
                 console.log(this.products);
             }
+        }, 
+        async getFilterProductByCategory(category :string ) {
+            const { baseUrl, apikey } = useAppConfig();
+            const {data, error} = await useFetch(`/rest/v1/products?category=eq.${category}&select=*`, {
+                baseURL: baseUrl,
+                method: "GET",
+                headers: {
+                    apikey: apikey,
+                },
+            });
+            
+            if(error.value){
+                this.status = false;
+                this.message = "Get Filtered Product Failed !!!";
+            }else if(data){
+                this.status = true;
+                this.message = "Get Filtered Product successfully";
+                this.products = data.value;
+                console.log(this.products);
+            }
         },
 
     }

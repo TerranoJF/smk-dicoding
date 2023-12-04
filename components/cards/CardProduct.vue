@@ -74,6 +74,7 @@
 </template> -->
 
 <script lang="ts" setup>
+import type { Products } from '~/types/products'; 
     const props = defineProps({
         product: {
             type: Object,
@@ -82,28 +83,62 @@
     });
 
     const { baseStorageUrl } = useAppConfig();
+    
+    const oneProduct = ref(props.product);
+    const addCart = () => {
+        oneProduct.value.isCart = !oneProduct.value.isCart;
+        
+        let localStorageData = localStorage.getItem("products");
+        
+        let productOfCart: Products[] = [];
+            
+        if (localStorageData) {
+            productOfCart = JSON.parse(localStorageData);
+        }
+        
+        if (oneProduct.value.isCart) {
+            productOfCart.push(oneProduct.value);
+            localStorage.setItem("products", JSON.stringify(productOfCart));
+        } else {
+            productOfCart = productOfCart.filter((item) => item.id !== oneProduct.value.id);
+            localStorage.setItem("products", JSON.stringify(productOfCart));
+        }
+    }
 </script>
 <template>
-    <section class="bg-white shadow-xl rounded-xl overflow-hidden">
-        <div :class="`w-full h-[200px] p-5 bg-gray-300`">
+    <section class="dash-card bg-white shadow-xl rounded-xl overflow-hidden">
+        <div :class="`w-full h-[225px] bg-gray-300`">
             <img :src="baseStorageUrl + props.product.image" class="w-full h-full
-            object-contain"/>
+            object-fill"/>
         </div>
         <div class="px-5 pb-5 pt-9 relative">
         
             <NuxtLink :to="`/product/${props.product.id}`" ><h3 class="text-lg font-
-            bold mb-4 text-limit limit-2">{{ props.product.name }}</h3></NuxtLink>
+            bold mb-4 text-limit limit-2 flex-grow">{{ props.product.name }}</h3></NuxtLink>
             
             <div class="flex justify-between items-center">
                 <span class="text-sm font-normal">{{ props.product.category }}</span>
-                <span class="text-sm font-normal">${{ props.product.price }}</span>
+                <span class="text-sm font-normal">Rp. {{ props.product.price }},00~</span>
             </div>
-            <div :class="`cursor-pointer absolute -top-5 right-7 w-[50px] h-[50px]
+            <div :class="`dash-button cursor-pointer absolute -top-5 right-7 w-[50px] h-[50px]
             ${props.product.isCart ? 'bg-blue-600 text-white' : 'bg-white'} shadow-xl
             rounded-full flex justify-center items-center hover:bg-blue-600 hover:text-white
-            transition duration-300`">
+            transition duration-300`" @click="addCart">
             <i class="ri-shopping-cart-2-line"></i>
             </div>
         </div>
     </section>
 </template>
+
+<style scoped>
+.dash-card{
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 2px 3px 12px rgba(0, 0, 0, 0.35); /* Sesuaikan bayangan di sini */
+}
+.dash-button{  
+  border-radius: 0.6rem;
+  box-shadow: 2px 3px 12px rgba(0, 0, 0, 0.35); /* Sesuaikan bayangan di sini */
+}
+</style>

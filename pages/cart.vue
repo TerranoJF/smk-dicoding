@@ -1,5 +1,8 @@
 <script lang="ts" setup>
-    import type { Products } from '~/types/products';
+import type { Products } from '~/types/products';
+    definePageMeta({
+        middleware: ["user-access"]
+    });
     const products = ref<Products[]>([]);
     const totalPrice = computed(() => {
         return products.value.filter((product) => product.price !== undefined).reduce((accumulator, currentValue) => accumulator + currentValue.price!, 0);
@@ -16,31 +19,30 @@
             products.value = JSON.parse(localStorageData);
         }
     })
+
+    const sendWhatsAppMessage = () => {
+    let message = `Halo, saya ingin memesan barang dengan total Rp. ${totalPrice.value}.\nBerikut daftar barang:\n`;
+
+    products.value.forEach((product, index) => {
+      message += `${index + 1}. ${product.name} - Rp. ${product.price}\n`;
+    });
+
+    const formattedMessage = encodeURIComponent(message);
+    const whatsappURL = `https://wa.me/628123788679?text=${formattedMessage}`;
+    window.open(whatsappURL, '_blank');
+  };
 </script>
 
 <template>
     <section>
         <div class="container">
-            <div class="py-10 flex gap-6">
-                <!-- awalnya
-                    <div class="w-[70%]">
-            
-                    <div class="flex justify-between items-center pb-7 border-b border-
-                    gray-300 mb-6">
-                    
-                        <h1 class="text-3xl font-medium">Shopping Cart</h1>
-                        <p class="text-3xl font-medium">0 Items</p>
-                    </div>
-                    <div class="flex flex-col gap-6">
-                        <CardsCardCart />
-                    </div>
-                </div> -->
-                <div class="w-[70%]">
+            <div class="py-10 flex gap-6"> 
+                <div class="w-[65%]">
 
                     <div class="flex justify-between items-center pb-7 border-b border-gray-300 mb-6">
 
-                        <h1 class="text-3xl font-medium">Shopping Cart</h1>
-                        <p class="text-3xl font-medium">{{ products.length }} Items</p>
+                        <h1 class="text-3xl font-medium">Keranjang Belanja</h1>
+                        <p class="text-3xl font-medium">{{ products.length }} Barang</p>
                     </div> 
                     
                     <div v-if="products.length > 0" class="flex flex-col gap-6">
@@ -50,52 +52,40 @@
                     </div>
 
                     <div v-else>
-                        <h5 class="text-xl font-light text-center">Cart is empty</h5>
+                        <h5 class="text-xl font-light text-center">Keranjang sedang Kosong</h5>
                     </div>
-                </div>
+                </div> 
 
-                <!-- AWALNYA
-                    <div class="w-[30%] bg-white shadow-xl h-max p-6">
-                    <h3 class="text-xl font-medium mb-6">Order Summary</h3>
-                    <div class="flex flex-col gap-3 border-b border-gray-300 pb-4">
-                        <div>
-                            <div class="flex gap-4 items-center">
-                                <span class="text-limit limit-1 text-sm">Men's Streetwear Fashion</span>
-                                <span class="text-sm font-semibold">$30</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="pt-4 flex items-center justify-between mb-6">
-                        <span class="text-base">Total</span>
-                        <span class="text-base font-bold">$30</span>
-                    </div>
-                    
-                    <button class="bg-blue-600 text-white text-base font-bold w-full py-
-                    2 rounded-lg">Checkout</button>
-        
-                </div> -->
-
-                <div class="w-[30%] bg-white shadow-xl h-max p-6">
-                    <h3 class="text-xl font-medium mb-6">Order Summary</h3>
+                <div class="dash-card w-[35%] bg-white shadow-xl h-max p-6">
+                    <h3 class="text-xl font-medium mb-6">Ringkasan Pesanan</h3>
                     <div class="flex flex-col gap-3 border-b border-gray-300 pb-4">
                         <div v-if="products.length > 0">
-                            <div v-for="(item, index) in products" :key="index" class="flex gap-4 items-center">
+                            <div v-for="(item, index) in products" :key="index" class="flex gap-4 items-center justify-between">
                                 <span class="text-limit limit-1 text-sm">{{ item.name }}</span>
-                                <span class="text-sm font-semibold">${{ item.price }}</span>
+                                <span class="text-sm font-semibold">Rp. {{ item.price }}</span>
                             </div>
                         </div>
                         <div v-else>
-                            <p class="text-sm text-center font-light">There are no to orders yet</p>
+                            <p class="text-sm text-center font-light">Belum ada pesanan</p>
                         </div>
                     </div>
                     <div class="pt-4 flex items-center justify-between mb-6">
                         <span class="text-base">Total</span>
-                        <span class="text-base font-bold">${{ totalPrice }}</span>
+                        <span class="text-base font-bold">Rp. {{ totalPrice }}</span>
                     </div>
-                    <button class="bg-blue-600 text-white text-base font-bold w-full py-2 rounded-lg">Checkout</button>
+                    <button class="bg-blue-600 text-white text-base font-bold w-full py-2 rounded-lg" @click="sendWhatsAppMessage">Pembayaran</button>
                 </div>
 
             </div>
         </div>
     </section>
 </template>
+
+<style scoped>
+.dash-card{
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 2px 3px 12px rgba(0, 0, 0, 0.16); /* Sesuaikan bayangan di sini */
+}
+</style>
