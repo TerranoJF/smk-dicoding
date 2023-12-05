@@ -26,41 +26,41 @@ const formCreateProduct = [
   { name: "category", label: "Kategori", type: "select", value: "", placeholder: "", required: true },
 ];
 
-const createProduct = async () => {
-  isLoading.value = true;
-  let file = formCreateProduct.find((item) => item.type === "file");
-  file = await uploadFile(file?.value);
-  const result: { [key: string]: any } = {};
-  formCreateProduct.forEach((item: FormField) => {
-    if(item.name){
-      result[item.name] = item.value;
+  const createProduct = async () => {
+    isLoading.value = true;
+    let file = formCreateProduct.find((item) => item.type === "file");
+    file = await uploadFile(file?.value);
+    const result: { [key: string]: any } = {};
+    formCreateProduct.forEach((item: FormField) => {
+      if(item.name){
+        result[item.name] = item.value;
+      }
+    })
+    result.image = file;
+    await productStore.createProduct(result);
+    if(!productStore.status){
+      isSuccess.value = productStore.status;
+      message.value = productStore.message;
+      isShowAlert.value = true;
+      isLoading.value = false;
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }else{
+      isSuccess.value = productStore.status;
+      message.value = productStore.message;
+      isShowAlert.value = true;
+      isLoading.value = false;
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      setTimeout(() => {
+        router.push({ path: "/product" });
+      }, 1000);
     }
-  })
-  result.image = file;
-  await productStore.createProduct(result);
-  if(!productStore.status){
-    isSuccess.value = productStore.status;
-    message.value = productStore.message;
-    isShowAlert.value = true;
-    isLoading.value = false;
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }else{
-    isSuccess.value = productStore.status;
-    message.value = productStore.message;
-    isShowAlert.value = true;
-    isLoading.value = false;
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-    setTimeout(() => {
-      router.push({ path: "/product" });
-    }, 1000);
   }
-}
 
 const uploadFile = async (formFile: any) => {
   const file = formFile?.target?.files[0];

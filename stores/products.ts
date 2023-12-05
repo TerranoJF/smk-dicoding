@@ -19,10 +19,10 @@ export const useProductsStore = defineStore("products", {
             
             if(error.value){
                 this.status = false;
-                this.message = "Get Products Failed !!!";
+                this.message = "Create Products Failed !!!";
             }else if(data){
                 this.status = true;
-                this.message = "Get Products successfully";
+                this.message = "Create Products successfully";
             }
         },
 

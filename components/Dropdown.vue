@@ -6,12 +6,11 @@
     const categoryStore = useCategoryStore();   
 
     
-    const { categories } = storeToRefs(categoryStore);
     categoryStore.getAllCategory();
+    const { categories } = storeToRefs(categoryStore);
 
     defineEmits(["selectedCategory"]);
 
-    const token = useCookie("user_role").value;
 </script>
 
 <template>
