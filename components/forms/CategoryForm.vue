@@ -7,6 +7,7 @@ const categoryStore = useCategoryStore();
 const isSuccess = ref(false);
 const isShowAlert = ref(false);
 const message = ref('');  
+const inputName = ref('');
 const isLoading = ref(false);
 
 const formCreateCategory = [
@@ -14,44 +15,46 @@ const formCreateCategory = [
 ];
 
 const createCategory = async () => {
-    isLoading.value = true; 
+  isLoading.value = true; 
 
-    const result: { [key: string]: any } = {};
-    formCreateCategory.forEach((item: FormFieldCategory) => {
-      if(item.name){
-        result[item.name] = item.value;
-      }
-    })  
-
-    await categoryStore.createCategory(result);
-    if(!categoryStore.status){
-      isSuccess.value = categoryStore.status;
-      message.value = categoryStore.message;
-      isShowAlert.value = true;
-      isLoading.value = false;
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    }else{
-      isSuccess.value = categoryStore.status;
-      message.value = categoryStore.message;
-      isShowAlert.value = true;
-      isLoading.value = false;
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-
-      setTimeout(() => { 
-        // eventBus.emit('categoryCreated');
-      }, 1000);
+  const result: { [key: string]: any } = {};
+  formCreateCategory.forEach((item: FormFieldCategory) => {
+    if(item.name){
+      result[item.name] = item.value;
     }
+  })  
+
+  await categoryStore.createCategory(result);
+  if(!categoryStore.status){
+    isSuccess.value = categoryStore.status;
+    message.value = categoryStore.message;
+    isShowAlert.value = true;
+    isLoading.value = false;
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }else{
+    isSuccess.value = categoryStore.status;
+    message.value = categoryStore.message;
+    isShowAlert.value = true;
+    isLoading.value = false;
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    }); 
+    
+    categoryStore.getAllCategory();
+        inputName.value = '';
   }
+  setTimeout(async () => {
+    isShowAlert.value = false; 
+  }, 3000);
+}
  
 </script>
 <template>
-    <section class="flex justify-center py-10">
+    <section class="flex justify-center py-5">
         <div class="w-[500px]">
             <h1 class="text-2xl mb-7 font-medium">Tambah Kategori</h1>
 
@@ -64,7 +67,7 @@ const createCategory = async () => {
                     <div class="mb-6">
                         <label :for="item.name" class="block mb-2 text-sm font-medium text-gray-900" >{{ item.label }}</label>
 
-                        <input  :type="item.type" :id="item.name" v-model="item.value" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" :placeholder="item.placeholder" :required="item.required" >
+                        <input  :type="item.type" :id="item.name" v-model="item.value" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" :placeholder="item.placeholder" :required="item.required" :value="inputName">
  
                     </div>
                     <button type="submit" class="text-white bg-primary hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">

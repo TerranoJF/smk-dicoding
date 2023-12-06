@@ -30,11 +30,14 @@
                 window.scrollTo({
                     top: 0,
                     behavior: "smooth",
-                });
-                setTimeout(async () => {
-                    await categoryStore.getAllCategory();
-                }, 1000);
+                }); 
+                categoryStore.getAllCategory(); 
             } 
+
+            setTimeout(async () => {
+                isShowAlert.value = false; 
+            }, 3000);
+
         } catch (error) { 
         console.error(error);
         }
@@ -55,7 +58,7 @@
 </script>
 
 <template>
-    <section class="flex justify-center w-400px py-8">
+    <section class="flex justify-center w-400px py-5">
       <div class="bg-white shadow-md rounded-lg overflow-hidden">
         <div v-if="isShowAlert" :class="`p-4 mb-4 text-sm rounded-lg ${isSuccess ? 'bg-green-100 text-green-800' : 'text-red-800 bg-red-100'}`" role="alert">
           {{ message }}

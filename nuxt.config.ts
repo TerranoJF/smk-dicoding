@@ -29,18 +29,26 @@ export default defineNuxtConfig({
   
   pwa: { 
     manifest: {
-      name: "E-Commerce",
-      short_name: "EC",
+      name: "Terra Shop",
+      short_name: "TS",
       theme_color: "#fff",
       background_color: "#fff",
       display: "standalone",
       orientation: "portrait",
       scope: "/",
       start_url: "/",
+      // icons: [
+      //   { 
+      //     src: "images/icons/TerraShop.svg",
+      //     sizes: "any",
+      //     type: "image/svg+xml",
+      //   },
+      // ]
+      
       icons: [
         { 
-          src: "images/icons/logo.png",
-          sizes: "144x144",
+          src: "images/icons/TerraShopPWA1000.png",
+          sizes: "1000x1000",
           type: "image/png",
         },
       ]
